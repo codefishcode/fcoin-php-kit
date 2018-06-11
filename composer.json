@@ -1,0 +1,24 @@
+{
+    "name": "codefishcode/fcoin-php-kit",
+    "description": "Fcoin api call with php",
+    "keywords": ["fcoin","php"],
+    "homepage": "https://github.com/codefishcode/fcoin-php-kit",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "codefishcode",
+            "homepage": "https://github.com/codefishcode/"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "codefishcode\\": "src/"
+        }
+    },
+    "require": {
+        "php": ">=5.5.0",
+        "guzzlehttp/guzzle": "~6.0",
+        "monolog/monolog": "^1.17"
+    }
+
+}
