@@ -6,7 +6,7 @@ use codefishcode\Fcoin as Fcoin;
 
 echo 'getServerTime() ' . Fcoin::getServerTime() . PHP_EOL;
 
-echo 'getSCurrencies() ' . Fcoin::getSCurrencies() . PHP_EOL;
+echo 'getSCurrencies() ' . Fcoin::getCurrencies() . PHP_EOL;
 
 echo 'getSymbols() ' . Fcoin::getSymbols() . PHP_EOL;
 
@@ -49,3 +49,8 @@ echo 'cancelOrder '. Fcoin::cancelOrder(
     ]
 ) . PHP_EOL;
 
+echo 'getTickData() ' . Fcoin::getTickData(['symbol' => 'btcusdt']) . PHP_EOL;
+
+echo 'getMarketDepthStatus() ' . Fcoin::getMarketDepthStatus(['symbol' => 'btcusdt', 'level' => 'L20']) . PHP_EOL;
+
+echo 'getMarketTransaction() ' . Fcoin::getMarketTransaction(['symbol' => 'btcusdt', 'before_id' => '25688775000', 'limit' => 20]) . PHP_EOL;

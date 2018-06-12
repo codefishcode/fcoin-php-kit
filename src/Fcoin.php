@@ -130,7 +130,7 @@ class Fcoin
     *   Get support currencties
     *   GET https://api.fcoin.com/v2/public/currencies
     */
-    public static function getSCurrencies()
+    public static function getCurrencies()
     {
         $response = self::client()->request('GET', 'public/currencies');
         return $response->getBody()->getContents();
@@ -366,6 +366,122 @@ class Fcoin
 
         return $response->getBody()->getContents();
 
+    }
+
+
+    /**
+    *   Get tick data of a symbol
+    *   GET https://api.fcoin.com/v2/market/ticker/$symbol
+    *
+    *   @param Array $criteria, 
+    *    'symbol' order symbol  (required)
+    *
+    *   @return json result
+    *    {
+    *       "status": 0,
+    *       "data": {
+    *           "type": "ticker.btcusdt",
+    *           "seq": 680035,
+    *           "ticker": [
+    *               7140.890000000000000000,       //latest price
+    *               1.000000000000000000,          //latest amount
+    *               7131.330000000,                //highest bid price
+    *               233.524600000,                 //highest bid volume 
+    *               7140.890000000,                //lowest ask price
+    *               225.495049866,                 //lowset ask volumn
+    *               7140.890000000,                //last 24hours close price
+    *               7140.890000000,                //last 24hours highest price
+    *               7140.890000000,                //last 24hours lowest price
+    *               1.000000000,                   //last 24hours buy side volume
+    *               7140.890000000000000000        //last 24hours sell side volume
+    *           ]
+    *       }
+    *    }
+    *
+    *   @example getTickData(['symbol' => 'btcusdt'])
+    */
+
+    public static function getTickData($criteria)
+    {
+        $response = self::client()->request('GET', 'market/ticker/' . $criteria['symbol']);
+        return $response->getBody()->getContents();
+    }
+
+
+
+
+    /**
+    *   Get market depth status
+    *   GET https://api.fcoin.com/v2/market/depth/$level/$symbol
+    *
+    *   @param Array $criteria, 
+    *    'level' data level, oprions: [L20, L100, full] (required)
+    *    'symbol' order symbol  (required)
+    *
+    *   @return json result
+    *   {
+    *    "type": "topics",
+    *    "topics": ["depth.L20.ethbtc", "depth.L100.btcusdt"]
+    *   }
+    *
+    *   @example getMarketDepthStatus(['symbol' => 'btcustd', 'level' => 'L20'])
+    */
+
+    public static function getMarketDepthStatus($criteria)
+    {
+        $response = self::client()->request('GET', 'market/depth/' . $criteria['level'] . '/' . $criteria['symbol']);
+        return $response->getBody()->getContents();
+    }
+
+
+    /**
+    *   Get Market committed transactions
+    *   GET https://api.fcoin.com/v2/market/trades/$symbol
+    *
+    *   @param Array $criteria, 
+    *    'symbol' order symbol  (required)
+    *    'before_id' the transaction before that id
+    *    'limit' limited transaction return
+    *
+    *   @return json result
+    *    {"id":null,
+    *    "ts":1523693400329,
+    *    "data":[
+    *       {
+    *            "amount":1.000000000,
+    *            "ts":1523419946174,
+    *            "id":76000,
+    *            "side":"sell",
+    *            "price":4.000000000
+    *       },
+    *       {
+    *            "amount":1.000000000,
+    *            "ts":1523419114272,
+    *            "id":74000,
+    *            "side":"sell",
+    *            "price":4.000000000
+    *       },
+    *       {
+    *            "amount":1.000000000,
+    *            "ts":1523415182356,
+    *            "id":71000,
+    *            "side":"sell",
+    *            "price":3.000000000
+    *       }
+    *      ]
+    *    }
+    *
+    *   @example getMarketTransaction(['symbol' => 'btcustd', 'before_id' => '25688775000', 'limit' => 20])
+    */
+
+    public static function getMarketTransaction($criteria)
+    {
+        $symbol = $criteria['symbol'];
+        unset($criteria['symbol']);
+        ksort($criteria);
+        $url_query = self::genQueryString($criteria);   
+        $response = self::client()->request('GET', 'market/trades/' . $symbol . $url_query);
+        return $response->getBody()->getContents();
     }
     
 }
